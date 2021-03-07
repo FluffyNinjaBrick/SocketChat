@@ -11,17 +11,24 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
 
-        String name;
+        // generic
+        String clientName;
         int serverPort = 9008;
-        Socket tcpSocket = null;
-        DatagramSocket udpSocket = null;
+        int bufferSize = 1024;
         Mode mode = Mode.TCP;
 
+        // sockets
+        Socket tcpSocket = null;
+        DatagramSocket udpSocket;
+
+        // ask user for name
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input username: ");
-        name = scanner.nextLine();
+        clientName = scanner.nextLine();
 
+        // run main program
         try {
+
             // TCP
             tcpSocket = new Socket("localhost", serverPort);
             TCPHandlerThread tcpThread = new TCPHandlerThread(tcpSocket);
@@ -29,7 +36,7 @@ public class Client {
 
             // UDP
             udpSocket = new DatagramSocket(tcpSocket.getLocalPort());
-            UDPHandlerThread udpThread = new UDPHandlerThread(udpSocket, serverPort);
+            UDPHandlerThread udpThread = new UDPHandlerThread(udpSocket, serverPort, bufferSize);
             udpThread.start();
 
             System.out.println("All set, chat is go");
@@ -37,13 +44,17 @@ public class Client {
 
             // listening loop
             while(true) {
+
+                // get message
                 String text = scanner.nextLine();
 
+                // toggle mode if requested
                 if (text.equals("U")) mode = Mode.UDP;
                 else if (text.equals("T")) mode = Mode.TCP;
 
+                // if not, send message
                 else {
-                    Message message = new Message(text, name);
+                    Message message = new Message(text, clientName);
                     switch (mode) {
                         case TCP:
                             tcpThread.send(message);

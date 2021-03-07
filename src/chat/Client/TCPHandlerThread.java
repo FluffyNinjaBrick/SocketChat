@@ -5,15 +5,20 @@ import chat.Message;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * A thread which listens for TCP messages sent from the server. It also handles sending messages to the server.
+ */
 public class TCPHandlerThread extends Thread {
 
     private final Socket socket;
     private final ObjectOutputStream os;
 
+
     public TCPHandlerThread(Socket socket) throws IOException {
         this.socket = socket;
         this.os = new ObjectOutputStream(socket.getOutputStream());
     }
+
 
     public void send(Message message) {
         try {

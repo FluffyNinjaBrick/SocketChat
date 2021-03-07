@@ -8,18 +8,25 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * A thread which listens for UDP messages sent from the server. It also handles sending messages to the server.
+ */
 public class UDPHandlerThread extends Thread {
 
     private final DatagramSocket datagramSocket;
     private final InetAddress localhost = InetAddress.getLocalHost();
     private final int serverPort;
-    private final int bufferSize = 1024;
+    private final int bufferSize;
 
-    public UDPHandlerThread(DatagramSocket datagramSocket, int serverPort) throws UnknownHostException {
+
+    public UDPHandlerThread(DatagramSocket datagramSocket, int serverPort, int bufferSize) throws UnknownHostException {
         this.datagramSocket = datagramSocket;
         this.serverPort = serverPort;
+        this.bufferSize = bufferSize;
     }
 
+
+    // method for sending UDP messages to the server, independent of run()
     public void send(Message message) {
 
         try {
@@ -37,6 +44,7 @@ public class UDPHandlerThread extends Thread {
         }
     }
 
+    // main thread loop for listening for incoming UDP messages and displaying them
     @Override
     public void run() {
 

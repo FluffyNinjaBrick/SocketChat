@@ -6,12 +6,16 @@ import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * A thread which manages sending and receiving messages to and from a single client.
+ */
 public class TCPHandlerThread extends Thread {
 
     private final Socket clientSocket;
     private final CopyOnWriteArrayList<TCPHandlerThread> handlerThreads;
     private final ObjectOutputStream objectOutputStream;
     private final int clientPort;
+
 
     public TCPHandlerThread(Socket clientSocket, CopyOnWriteArrayList<TCPHandlerThread> handlerThreads) throws IOException {
         this.clientSocket = clientSocket;
@@ -20,7 +24,8 @@ public class TCPHandlerThread extends Thread {
         this.handlerThreads = handlerThreads;
     }
 
-    // publicly accessible thread for other threads to share their messages through
+
+    // publicly accessible method for other threads to share their messages through
     public void send(Message message) {
         try {
             this.objectOutputStream.writeObject(message);
@@ -29,7 +34,7 @@ public class TCPHandlerThread extends Thread {
         }
     }
 
-    // perpetually active run method which listens for incoming messages and shares them with other threads
+    // listens for incoming messages and shares them with other threads
     @Override
     public void run() {
         try {

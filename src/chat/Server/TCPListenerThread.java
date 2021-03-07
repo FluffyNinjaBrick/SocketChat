@@ -5,15 +5,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * A server thread which takes care of accepting TCP connections and creating dedicated handler threads for them.
+ */
 public class TCPListenerThread extends Thread {
 
     private final CopyOnWriteArrayList<TCPHandlerThread> tcpHandlerThreads;
     private final ServerSocket tcpSocket;
 
+
     public TCPListenerThread(CopyOnWriteArrayList<TCPHandlerThread> tcpHandlerThreads, ServerSocket tcpSocket) {
         this.tcpHandlerThreads = tcpHandlerThreads;
         this.tcpSocket = tcpSocket;
     }
+
 
     @Override
     public void run() {

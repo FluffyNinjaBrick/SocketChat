@@ -13,6 +13,7 @@ public class Server {
         // --------- SETUP ---------
         // generic
         final int serverPort = 9008;
+        final int bufferSize = 1024;
 
         // TCP
         final CopyOnWriteArrayList<TCPHandlerThread> tcpHandlerThreads = new CopyOnWriteArrayList<>();
@@ -34,7 +35,7 @@ public class Server {
             // UDP
             udpSocket = new DatagramSocket(serverPort);
             InetAddress localhost = InetAddress.getLocalHost();
-            UDPThread udpThread = new UDPThread(tcpHandlerThreads, udpSocket, localhost);
+            UDPThread udpThread = new UDPThread(tcpHandlerThreads, udpSocket, localhost, bufferSize);
             udpThread.start();
 
             while(true) {}
