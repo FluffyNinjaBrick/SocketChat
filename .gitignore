@@ -1,0 +1,12 @@
+out/
+.idea/
+src/zad1/
+src/zad2/
+src/zad3/
+src/JavaTcpClient.java
+src/JavaTcpServer.java
+src/JavaUdpClient.java
+src/JavaUdpServer.java
+src/PythonUdpClient.py
+src/PythonUdpServer.py
+Lab1.iml
